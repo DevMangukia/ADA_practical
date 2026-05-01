@@ -1,0 +1,97 @@
+import java.util.*;
+public class p4 {
+    static void merge(int arr[], int left, int mid, int right) {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+        int L[] = new int[n1];
+        int R[] = new int[n2];
+        
+        for (int i = 0; i < n1; i++) {
+            L[i] = arr[left + i];
+        }
+        for (int j = 0; j < n2; j++) {
+            R[j] = arr[mid + 1 + j];
+        }
+        
+        int i = 0, j = 0, k = left;
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                arr[k] = L[i];
+                i++;
+            } else {
+                arr[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+        while (i < n1) {
+            arr[k] = L[i];
+            i++;
+            k++;
+        }    
+        while (j < n2) {
+            arr[k] = R[j];
+            j++;
+            k++;
+        } 
+        System.out.print("Merging " + left + ":" + right + " : ");
+        for (int x = 0; x < arr.length; x++) {
+            System.out.print(arr[x] + " ");
+        }
+        System.out.println();
+    }
+    
+    static void mergesort(int arr[], int left, int right) {
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergesort(arr, left, mid);
+            mergesort(arr, mid + 1, right);
+            merge(arr, left, mid, right);
+        }
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter no. of elements: ");
+        int n = sc.nextInt();
+
+        int arr[] = new int[n];
+        System.out.print("Enter elements: ");
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+        
+        long startTime = System.nanoTime();
+        mergesort(arr, 0, n - 1);
+
+        long endtime = System.nanoTime();
+        System.out.println("\n Sorted Array: ");
+        for(int i = 0; i < n; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.print("\n Execution Time: " + (endtime - startTime) + "ns");
+    }
+}
+
+/*
+Enter no. of elements: 5
+Enter elements: 
+64 25 12 22 11
+
+Merging 0:1 : 25 64 12 22 11 
+Merging 0:2 : 12 25 64 22 11 
+Merging 3:4 : 12 25 64 11 22 
+Merging 0:4 : 11 12 22 25 64 
+
+Sorted Array: 
+11 12 22 25 64 
+
+Execution Time: 120500ns
+*/
+
+/*
+Enter no. of elements: 100
+
+Execution Time: 900000ns
+*/
