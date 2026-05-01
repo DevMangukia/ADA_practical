@@ -1,0 +1,51 @@
+import java.util.*;
+public class p6_1{
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter no. of elements: ");
+        int n = sc.nextInt();
+        
+        int arr[] = new int[n];
+        System.out.print("Enter elements: ");
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+        
+        System.out.print ("Enter element to search: ");
+        int key = sc.nextInt();
+        boolean found = false;
+        
+        for (int i = 0; i < n; i++) {
+            if (arr[i] == key) {
+                System.out.print("Element found at position " + (i+1));
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.print("Elements are not found"); 
+        }
+    }
+}
+
+/*
+Enter no. of elements: 6
+Enter elements: 
+10 35 28 44 19 50
+
+Enter element to search: 28
+
+Element found at position 3
+*/
+
+
+/*
+Enter no. of elements: 7
+Enter elements: 
+5 12 18 7 30 25 40
+
+Enter element to search: 15
+
+Elements are not found
+*/
