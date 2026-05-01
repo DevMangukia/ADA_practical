@@ -1,81 +1,83 @@
 import java.util.*;
-public class p10 {
-
-    static int max(int a, int b) {
-        return (a > b) ? a : b;
-    }
-    public static void main(String[] args) {
+public class p2 {
+    public static void main(String args[]){
         Scanner sc = new Scanner(System.in);
-        int n, W;
+        int a[] = new int[100];
+        int size, type, temp, flag;
+        
+        System.out.print("Enter the size of array : ");
+        size = sc.nextInt();
 
-        System.out.print("Enter number of items: ");
-        n = sc.nextInt();
-
-        int[] wt = new int[n];
-        int[] val = new int[n];
-        System.out.print("Enter weights of items: ");
-        for (int i = 0; i < n; i++) {
-            wt[i] = sc.nextInt();
+        System.out.print("How you want to enter array (Manually = 0, Random = 1) : ");
+        type = sc.nextInt();
+        
+        if (type == 0){
+            System.out.println("Enter your array : ");
+            for(int i = 0; i < size; i++){
+                a[i] = sc.nextInt();
+            }
+        } else if (type == 1) {
+            for(int i = 0; i < size; i++){
+                a[i] = (int)(Math.random() * 100);
+            }
+        } else {
+            System.out.println("Enter correct choice to insert value.");
         }
-
-        System.out.println("Enter values of items: ");
-        for (int j = 0; j < n; j++) {
-            val[j] = sc.nextInt();
-        }
-
-        System.out.print("Enter capacity of Knapsack: ");
-      W = sc.nextInt();
-
-        int[][] V = new int[n + 1][W + 1];
-        for (int i = 0; i <= n; i++) {
-            for (int j = 0; j <= W; j++) {
-
-                    if (i == 0 || j == 0) {
-                    V[i][j] = 0;
-                } 
-                else if (wt[i - 1] <= j) {
-                    V[i][j] = max(V[i - 1][j], V[i - 1][j - wt[i - 1]] + val[i - 1]);
-                } 
-                else {
-                    V[i][j] = V[i - 1][j];
+ 
+        long t1 = System.nanoTime();
+        for(int i = 0; i < size-1; i++){
+            flag = 0;
+            for(int j = 0; j < size-i-1; j++){
+                if(a[j] > a[j+1]){
+                    temp = a[j];
+                    a[j] = a[j+1];
+                    a[j+1] = temp;
+                    flag = 1;
                 }
             }
-        }
-        System.out.println("\nDP Matrix:");
-        System.out.print("     ");
-        for (int j = 0; j <= W; j++) {
-            System.out.print(j + "\t");
-        }
-        System.out.println();
-
-        for (int i = 0; i <= n; i++) {
-            System.out.print("i=" + i + " |");
-            for (int j = 0; j <= W; j++) {
-                System.out.print(V[i][j] + "\t");
+            if (flag == 0){
+                break;
             }
-            System.out.println();
+            System.out.println("Stage of array after " + (i+1) + " step : ");
+            for(int j = 0; j < size; j++){
+                System.out.print(a[j] + " ");
+            }
+            System.out.println("");
         }
-        System.out.println("\nMaximum Profit in Knapsack = " + V[n][W]);
+        
+        long t2 = System.nanoTime();
+        System.out.println("\nYour sorted array :");
+        for(int i = 0; i < size; i++){
+            System.out.print(a[i] + " ");
+        }
+        System.out.println("\nThe total time taken by the system to sort the array is " + (t2-t1) + " nanosecond.");
     }
 }
 
 /*
-Enter number of items: 4
+Enter the size of array : 5
+How you want to enter array (Manually = 0, Random = 1) : 0
+Enter your array : 
+64 25 12 22 11
 
-Enter weights of items: 2 3 4 5
+Stage of array after 1 step : 
+25 12 22 11 64 
+Stage of array after 2 step : 
+12 22 11 25 64 
+Stage of array after 3 step : 
+12 11 22 25 64 
+Stage of array after 4 step : 
+11 12 22 25 64 
 
-Enter values of items: 
-3 4 5 6
+Your sorted array :
+11 12 22 25 64 
 
-Enter capacity of Knapsack: 5
+The total time taken by the system to sort the array is 168400 nanosecond.
+*/
 
-DP Matrix:
-     0	1	2	3	4	5	
-i=0 |0	0	0	0	0	0	
-i=1 |0	0	3	3	3	3	
-i=2 |0	0	3	4	4	7	
-i=3 |0	0	3	4	5	7	
-i=4 |0	0	3	4	5	7	
-
+/*
+Enter the size of array : 100
+The total time taken by the system to sort the array is 3200000 nanosecond.
+*/
 Maximum Profit in Knapsack = 7
 */
