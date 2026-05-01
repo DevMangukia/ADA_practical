@@ -1,0 +1,107 @@
+import java.util.*;
+public class p13 {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter X: ");
+        String X = sc.next();
+        System.out.print("Enter Y: ");
+        String Y = sc.next();
+
+        int n = X.length();
+        int m = Y.length();
+
+        int[][] dp = new int[n + 1][m + 1];
+        char[][] dir = new char[n + 1][m + 1]; 
+
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (X.charAt(i - 1) == Y.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                    dir[i][j] = 'c';
+                } else if (dp[i - 1][j] >= dp[i][j - 1]) {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                    dir[i][j] = 'u';
+                } else {
+                    dp[i][j] = dp[i][j - 1];
+                    dir[i][j] = 'l';
+                }
+            }
+        }
+
+        System.out.println("\nSCS DP Matrix: ");
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        System.out.println("\nDirection Matrix: ");
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                if (i == 0 || j == 0) {
+                    System.out.print("- ");
+                } else {
+                    System.out.print(dir[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+
+        StringBuilder scs = new StringBuilder();
+        int i = n, j = m;
+        while (i > 0 && j > 0) {
+            if (X.charAt(i - 1) == Y.charAt(j - 1)) {
+                scs.append(X.charAt(i - 1));
+                i--;
+                j--;
+            } else if (dp[i - 1][j] > dp[i][j - 1]) {
+                scs.append(X.charAt(i - 1));
+                i--;
+            } else {
+                scs.append(Y.charAt(j - 1));
+                j--;
+            }
+        }
+
+        while (i > 0) {
+            scs.append(X.charAt(i - 1));
+            i--;
+        }
+        while (j > 0) {
+            scs.append(Y.charAt(j - 1));
+            j--;
+        }
+        scs.reverse();
+        System.out.println("Shortest Common Supersequence: " + scs.toString());
+        System.out.println("Length of scs: " + scs.length());
+    }
+}
+
+/*
+Enter X: AGGTAB
+Enter Y: GXTXAYB
+
+SCS DP Matrix: 
+0 0 0 0 0 0 0 0 
+0 1 1 1 1 1 1 1 
+0 1 1 1 2 2 2 2 
+0 1 2 2 2 2 2 2 
+0 1 2 2 2 3 3 3 
+0 1 2 3 3 3 3 3 
+0 1 2 3 3 3 4 4 
+0 1 2 3 3 4 4 5 
+
+Direction Matrix: 
+- - - - - - - 
+- c u u u u u 
+- u c u u u u 
+- u c u u u u 
+- u u c u c u 
+- u u c u u u 
+- u u c u u c 
+- u u c u c u 
+
+Shortest Common Supersequence: AGXGTXAYB
+Length of scs: 9
+*/
